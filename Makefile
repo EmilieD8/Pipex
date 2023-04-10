@@ -6,7 +6,7 @@
 #    By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/11 13:11:53 by edrouot           #+#    #+#              #
-#    Updated: 2023/04/07 14:17:37 by edrouot          ###   ########.fr        #
+#    Updated: 2023/04/10 15:47:08 by edrouot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJS	= $(SRCS:.c=.o)
 
 CC 	= cc
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 all:	$(NAME)
 
