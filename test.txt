@@ -1,0 +1,2 @@
+Je veux savoir combien de lignes j'ai dans ce fichier. 
+Il y en a deux.
