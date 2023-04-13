@@ -25,7 +25,6 @@ char **get_path(char **envp)
     ft_strlcpy(path, envp[i], length + 1);
     path_arr = ft_split(path, ':');
     free(path);
-
     return (path_arr);
 }
 
@@ -38,18 +37,22 @@ char *check_access(char **envp, char **cmd)
     path_arr = get_path(envp);
     i = 0;
     // free stuff
-    write(2, "888", 3);
-    while (path_arr[i] != (void*)'\0' || access(path_cmd, F_OK | X_OK) != 0)
+    while (path_arr[i] != (void*)'\0')// || access(path_cmd, F_OK | X_OK) != 0)
     {
         path_cmd = ft_strjoin(path_arr[i], "/");
         path_cmd = ft_strjoin(path_cmd, cmd[0]);
+        printf("%s\n", path_cmd);
         if (access(path_cmd, F_OK | X_OK) != 0)
             free(path_cmd);
+        else
+            break;
         i++;
     }
-    // if (path_arr[i] == (void*)'\0')
-    //     error_out("Command not found");
-    // free(path_arr) // while loop
+    if (path_arr[i] == (void*)'\0')
+    {
+        error_out("Command not found");
+    }
+    // free(path_arr); // while loop
     return (path_cmd);
 }
 
@@ -71,8 +74,10 @@ void child_one(int *pipefd, char **argv, char **envp)
     close(pipefd[1]);
     cmd = ft_split(argv[2], ' ');
     path = check_access(envp, cmd);
-    write(2, "111", 3);
-    execve(path, cmd, envp);
+    // if (path == "")
+    //     error_out("Command not found");
+    printf("%d", execve(path, cmd, envp));
+
 }
 
 void child_two(int *pipefd, char **argv, char **envp)
@@ -81,7 +86,7 @@ void child_two(int *pipefd, char **argv, char **envp)
     char *path;
     int fd;
 
-    fd = open(argv[4], O_CREAT | O_WRONLY |  O_TRUNC, 0777);
+    fd = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
     if (fd < 0)
         error_out("Error_fd_open");
     if (dup2(pipefd[0], STDIN_FILENO) == -1)
@@ -103,7 +108,7 @@ int main(int argc, char **argv, char **envp)
 
     if (argc != 5)
     {
-        write (2, "Error\n", 6); // check if other error message is supposed to be written 
+        write (2, "Error\n", 6);
         return (0);
     }
     if (pipe(pipe_fd) == -1)
@@ -112,7 +117,7 @@ int main(int argc, char **argv, char **envp)
     if (pid[0] == -1)
         error_out("Fork");
     else if (pid[0] == 0)
-        child_one(pipe_fd, argv, envp);
+      {  child_one(pipe_fd, argv, envp); write(2, "TY", 2); }
     pid[1] = fork();
     if (pid[1] == -1)
         error_out("Fork");
