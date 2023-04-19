@@ -6,7 +6,7 @@
 /*   By: edrouot <edrouot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 11:14:28 by edrouot           #+#    #+#             */
-/*   Updated: 2023/04/18 15:27:13 by edrouot          ###   ########.fr       */
+/*   Updated: 2023/04/19 15:24:25 by edrouot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*check_access(char **envp, char **cmd)
 	char		**path_arr;
 	char		*tmp;
 
+	if (access(cmd[0], F_OK) == 0)
+		return (cmd[0]);
 	path_arr = get_path(envp);
 	i = 0;
 	while (path_arr[i] != (void *) '\0')
